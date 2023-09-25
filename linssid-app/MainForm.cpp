@@ -258,9 +258,11 @@ void MainForm::addInterfaces() {
         string interfaceLine;
         mainFormWidget.interfaceCbx->clear();
         boost::smatch sm;
+        // Fecth the Interface name using a RegExp
         boost::regex rx("^[ \\t]+Interface +([^ ]+) *");
         while (getline(ifs, interfaceLine) && interfaceLine != eof) {
             if (boost::regex_match(interfaceLine, sm, rx))
+				// Interface name is in RegExp group 1
                 mainFormWidget.interfaceCbx->addItem(QString::fromStdString(sm[1]));
         }
     } else {
@@ -624,7 +626,7 @@ void MainForm::fillTable() {
     model_->setRowCount(maxTableIndex_ + 1);
     for (int row = 0; row <= maxTableIndex_; row++) {
         cellDataRay_[row].pTableItem[SSID]->
-                setText(cellDataRay_[row].essid.c_str());
+                setText((cellDataRay_[row].essid+(cellDataRay_[row].associated ? " (*)" : "")).c_str());
         if (cellDataRay_[row].essid == "<hidden>") stats_.totalHidden++;
         cellDataRay_[row].pTableItem[MAC]->
                 setText(cellDataRay_[row].macAddr.c_str());
@@ -690,6 +692,9 @@ void MainForm::fillTable() {
     }
     setVisibleCols();
     mainFormWidget.mainTableView->setSortingEnabled(true);
+    mainFormWidget.mainTableView->resizeRowsToContents();
+    mainFormWidget.mainTableView->resizeColumnsToContents();
+    mainFormWidget.mainTableView->setWordWrap(true);
 }
 
 class MainForm::Chan24ScaleDraw : public QwtScaleDraw {
@@ -755,7 +760,7 @@ void MainForm::fillPlots() {
             markerSymbol->setStyle(cellDataRay_[tbi].BW >= 40 ? QwtSymbol::Diamond : QwtSymbol::Triangle);
 
             if (plotShowLabel_) {
-                QwtText markerLabel = QString::fromStdString(cellDataRay_[tbi].essid);
+                QwtText markerLabel = QString::fromStdString(cellDataRay_[tbi].essid + ((cellDataRay_[tbi].associated) ? " (*)" : ""));
                 markerLabel.setColor(cellDataRay_[tbi].color);
                 int ub = static_cast<int>(mainFormWidget.timePlot->axisScaleDiv(QwtPlot::yLeft).upperBound());
                 if (cellDataRay_[tbi].signal <= ub - 5)
@@ -880,6 +885,7 @@ void MainForm::initNewCell(string macAddress, int tbi) {
     cellDataRay_[tbi].maxSignal = -120;
     cellDataRay_[tbi].firstSeen = now_;
     cellDataRay_[tbi].firstPlot = true;
+    cellDataRay_[tbi].associated = false;
     cellDataRay_[tbi].protocol = "unknown";
     cellDataRay_[tbi].vendor = vendorDb_->lookup(macAddress);
     cellDataRay_[tbi].pHistory = make_unique<History>(); // give it a history
@@ -916,9 +922,10 @@ void MainForm::initNewCell(string macAddress, int tbi) {
 void MainForm::extractData(string tl, int &tbi, int &newBSS) {
     // extract the information from each line recovered from the pipe from getter
     boost::smatch sm;
-    if (boost::regex_match(tl, sm, boost::regex("^BSS.*?(([A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}).*",
+    if (boost::regex_match(tl, sm, boost::regex("^BSS.*?(([A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2})(.*(associated)|.*)$",
           boost::regex_constants::icase))) {
         pageBlock = BT_BSS;
+        // mac Address is in the first group of RegExp
         string macAddress = sm[1];
         //string macAddress = boost::regex_replace(tl,
         //        boost::regex(".+?((?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}).*"), "$1");
@@ -940,6 +947,9 @@ void MainForm::extractData(string tl, int &tbi, int &newBSS) {
         }
         cellDataRay_[tbi].timesSeen++;
         cellDataRay_[tbi].lastSeen = now_;
+        // The keywork associated is in group 4 of the RegExp if this PC is linked with this BSS
+        cellDataRay_[tbi].associated = sm[4].compare("associated") == 0;
+
         cellDataRay_[tbi].BW = 20; // all have at least 20 MHz bandwidth
         cellDataRay_[tbi].protocol = "";
     } else if (boost::regex_match(tl, sm, boost::regex("^.+?SSID: +(.*)"))) {

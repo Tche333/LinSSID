@@ -8,7 +8,7 @@
 #ifndef CUSTOM_H
 #define	CUSTOM_H
 
-#define LINSSIDVERSION "3.6-ext"
+#define LINSSIDVERSION "3.7"
 #define LINSSIDPREFSVER "3.3.1"
 #define LINSSIDDATALOGVER "2.8"
 #define MAX_SAMPLES 100

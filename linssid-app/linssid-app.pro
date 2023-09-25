@@ -1,7 +1,7 @@
 TEMPLATE = app
 DESTDIR = dist/Release/GNU-Linux-x86
 TARGET = linssid
-VERSION = 3.6
+VERSION = 3.7
 CONFIG -= debug_and_release app_bundle lib_bundle
 CONFIG += release 
 PKGCONFIG +=

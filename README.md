@@ -1,7 +1,7 @@
-# linssid-ex
+# LinSSID
 
-This is LinSSID with extended functionalities.
-The initial source is based on LinSSID 3.6. (https://sourceforge.net/projects/linssid/).
+This is the orginal LinSSID with extended functionalities from [chunmeng](https://github.com/chunmeng/linssid-ex)
+The initial source is based on LinSSID 3.6i from Warren. (https://sourceforge.net/projects/linssid/).
 
 ## New Features Added
 - New columns for BSS load and station count

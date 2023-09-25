@@ -209,7 +209,7 @@
 Examples: ??:02:03:04:05:06, 0a-0b-0c-0d-0e-??</string>
    </property>
    <property name="inputMask">
-    <string/>
+    <string>XX:XX:XX:XX:XX:XX</string>
    </property>
    <property name="text">
     <string/>

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
+    <width>428</width>
     <height>387</height>
    </rect>
   </property>
@@ -85,7 +85,9 @@
    <item row="1" column="0" colspan="3">
     <widget class="QLabel" name="aboutLabel">
      <property name="text">
-      <string>LinSSID is authored by Warren Severin. It borrows from the graphic design ideas of the Windows program Inssider, but it is otherwise completely built from scratch.
+      <string>LinSSID is originally authored by Warren Severin (till version 3.6).
+It borrows from the graphic design ideas of the Windows program Inssider, but it is otherwise completely built from scratch.
+Additional authors: chunmeng, am97, Tche333
 
 The LinSSID program is licensed under the terms of the GPL version 3. LinSSID version 2.2 and above are built using Qt5. LinSSID links to libraries of the Qwt project (http://qwt.sf.net). The LinSSID program also links to the Boost C++ libraries. The license to use these components is included in the program binary distribution.
 
