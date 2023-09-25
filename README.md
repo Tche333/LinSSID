@@ -1,9 +1,12 @@
 # LinSSID
 
-This is the orginal LinSSID with extended functionalities from [chunmeng](https://github.com/chunmeng/linssid-ex)
-The initial source is based on LinSSID 3.6i from Warren. (https://sourceforge.net/projects/linssid/).
+This is the original LinSSID with extended functionalities from [chunmeng](https://github.com/chunmeng/linssid-ex).
+
+The initial source is based on LinSSID 3.6 from Warren. (https://sourceforge.net/projects/linssid/).
 
 ## New Features Added
+- Star the current AP the PC is connected to
+- update the MAC Address prefix list from WireShark
 - New columns for BSS load and station count
 - Status bar with counts of total, hidden and open AP
 - Show ESSID as label on channel plot, align to the marker
